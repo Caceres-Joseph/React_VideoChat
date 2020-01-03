@@ -1,0 +1,17 @@
+{
+  "name": "RNChat",
+  "displayName": "RNChat",
+  "senderID": "594331487245",
+  "connectyCubeConfig": [
+    {
+      "appId": 1689,
+      "authKey": "Z8cQBp2CKaRYe63",
+      "authSecret": "NY2JOqastcYZ5wZ"
+    },
+    {
+      "debug": {
+        "mode": 1
+      }
+    }
+  ]
+}
