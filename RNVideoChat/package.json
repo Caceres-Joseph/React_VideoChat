@@ -28,7 +28,11 @@
     "react-native-webrtc": "1.75.1",
     "react-redux": "^7.1.1",
     "redux": "^4.0.4",
-    "rn-prompt": "^1.0.4"
+    "rn-prompt": "^1.0.4",
+    "react-native-autogrow-textinput": "^5.2.0",
+    "react-native-device-info": "2.3.2",
+    "react-native-push-notification": "^3.1.9",
+    "react-native-status-bar-height": "^2.4.0"
   },
   "devDependencies": {
     "@babel/core": "^7.6.2",

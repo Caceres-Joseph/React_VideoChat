@@ -5,8 +5,8 @@ export default class AuthLogo extends React.Component {
 	render() {
 		return (
 			<View style={styles.container}>
-				<Image style={styles.imageSize} source={require('../../images/logo_with_text.png')} />
-				<Text>Video Chat</Text>
+				<Image style={styles.imageSize} source={require('../../images/diario.jpeg')} />
+				<Text>Nuestro Diario</Text>
 			</View>
 		)
 	}
@@ -19,7 +19,6 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 	},
 	imageSize: {
-		width: 200,
 		height: 150,
 	}
 })
