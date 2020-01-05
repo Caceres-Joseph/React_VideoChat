@@ -4,7 +4,27 @@ import UserModel from '../models/User';
 import Contacts from './ContactsDataService';
 
 class UserService {
+
+ 
+
+	constructor() {
+		this.user2;
+		this.jhosef = "My nombre es Jhosef";
+	}
+
+
+	set_user(user) {
+		console.log("##set_user")
+		this.user = user;
+		console.log(user.id)
+		console.log("#/set_user")
+	}
+
+
 	signin(user) {
+
+		console.log("##signinSession")
+
 		return new Promise((resolve, reject) => {
 			ConnectyCube.createSession(user, (error, session) => {
 				session ? resolve(session.user) : reject(error)
@@ -14,155 +34,162 @@ class UserService {
 
 	signin2(params) {
 		return new Promise((resolve, reject) => {
-		  this.createSession(params)
-			.then(session => {
-			  const user = session.user;
-			  user.password = params.password;
-			  CurrentUser.set(user);
-			  resolve(user);
-			})
-			.catch(error => reject(error));
+			this.createSession(params)
+				.then(session => {
+					const user = session.user;
+					user.password = params.password;
+					CurrentUser.set(user);
+
+					console.log("##Sing2 ");
+					console.log(session);
+					console.log("#/Sing2");
+					resolve(user);
+				})
+				.catch(error => {
+					reject(error)
+					console.log("##fail signin2")
+				});
 		});
-	  }
-	
-	  signup(params) {
+	}
+
+	signup(params) {
 		return new Promise((resolve, reject) => {
-		  this.createSession()
-			.then(() => this.register(params))
-			.then(() => this.login(params))
-			.then(user => {
-			  user.password = params.password;
-			  CurrentUser.set(user);
-			  resolve(user);
-			})
-			.catch(error => reject(error));
+			this.createSession()
+				.then(() => this.register(params))
+				.then(() => this.login(params))
+				.then(user => {
+					user.password = params.password;
+					CurrentUser.set(user);
+					resolve(user);
+				})
+				.catch(error => reject(error));
 		});
-	  }
-	
-	  autologin() {
+	}
+
+	autologin() {
 		return new Promise(async (resolve, reject) => {
-		  try {
-			const data = await CurrentUser.get();
-	
-			if (!data) reject();
-	
-			this.signin({email: data.email, password: data.password})
-			  .then(user => resolve(user))
-			  .catch(error => reject(error));
-		  } catch (error) {
-			reject(error);
-		  }
-		});
-	  }
-	
-	  resetPassword(email) {
-		return new Promise((resolve, reject) => {
-		  ConnectyCube.users.resetPassword(email, error => {
-			error ? reject(error) : resolve();
-		  });
-		});
-	  }
-	
-	  logout() {
-		return new Promise((resolve, reject) => {
-		  ConnectyCube.logout(error => {
-			if (error) {
-			  reject(error);
-			} else {
-			  ConnectyCube.chat.disconnect();
+			try {
+				const data = await CurrentUser.get();
+
+				if (!data) reject();
+
+				this.signin({ email: data.email, password: data.password })
+					.then(user => resolve(user))
+					.catch(error => reject(error));
+			} catch (error) {
+				reject(error);
 			}
-		  });
 		});
-	  }
-	
-	  createSession(user) {
+	}
+
+	resetPassword(email) {
 		return new Promise((resolve, reject) => {
-		  const cb = (error, session) => {
-			session ? resolve(session) : reject(error);
-		  };
-	
-		  const params = user ? [user, cb] : [cb];
-	
-		  ConnectyCube.createSession(...params);
+			ConnectyCube.users.resetPassword(email, error => {
+				error ? reject(error) : resolve();
+			});
 		});
-	  }
-	
-	  login(params) {
+	}
+
+	logout() {
 		return new Promise((resolve, reject) => {
-		  ConnectyCube.login(params, (error, user) => {
-			error ? reject(error) : resolve(user);
-		  });
-		});
-	  }
-	
-	  register(params) {
-		return new Promise((resolve, reject) => {
-		  ConnectyCube.users.signup(params, (error, user) => {
-			error ? reject(error) : resolve(user);
-		  });
-		});
-	  }
-	
-	  getUserById(id) {
-		return new Promise((resolve, reject) => {
-		  ConnectyCube.users.get(id, (error, user) => {
-			error ? reject(error) : resolve(user);
-		  });
-		});
-	  }
-	
-	  listUsers(params) {
-		return new Promise((resolve, reject) => {
-		  ConnectyCube.users.get(params, (error, result) => {
-			if (!error && result) {
-			  const users = result.items;
-	
-			  let conatcts = {};
-	
-			  for (let i = 0; i < users.length; i++) {
-				let user = new UserModel(users[i].user);
-	
-				if (CurrentUser.getProp('id') === user.id) {
-				  continue;
+			ConnectyCube.logout(error => {
+				if (error) {
+					reject(error);
+				} else {
+					ConnectyCube.chat.disconnect();
 				}
-	
-				conatcts[user.id] = user;
-			  }
-	
-			  Contacts.set(conatcts);
-	
-			  resolve(conatcts);
-			} else if (error.code === 404) {
-			  resolve({});
-			} else {
-			  reject(error);
-			}
-		  });
+			});
 		});
-	  }
-	
-	  listUsersByIds(ids) {
+	}
+
+	createSession(user) {
 		return new Promise((resolve, reject) => {
-		  this.listUsers({
-			per_page: 100,
-			filter: {
-			  field: 'id',
-			  param: 'in',
-			  value: ids || '',
-			},
-		  })
-			.then(users => resolve(users))
-			.catch(error => reject(error));
+			const cb = (error, session) => {
+				session ? resolve(session) : reject(error);
+			};
+
+			const params = user ? [user, cb] : [cb];
+
+			ConnectyCube.createSession(...params);
 		});
-	  }
-	
-	  listUsersByFullName(name) {
+	}
+
+	login(params) {
 		return new Promise((resolve, reject) => {
-		  this.listUsers({per_page: 100, full_name: name})
-			.then(users => resolve(Object.values(users)))
-			.catch(error => reject(error));
+			ConnectyCube.login(params, (error, user) => {
+				error ? reject(error) : resolve(user);
+			});
 		});
-	  }
+	}
+
+	register(params) {
+		return new Promise((resolve, reject) => {
+			ConnectyCube.users.signup(params, (error, user) => {
+				error ? reject(error) : resolve(user);
+			});
+		});
+	}
+
+	getUserById(id) {
+		return new Promise((resolve, reject) => {
+			ConnectyCube.users.get(id, (error, user) => {
+				error ? reject(error) : resolve(user);
+			});
+		});
+	}
+
+	listUsers(params) {
+		return new Promise((resolve, reject) => {
+			ConnectyCube.users.get(params, (error, result) => {
+				if (!error && result) {
+					const users = result.items;
+
+					let conatcts = {};
+
+					for (let i = 0; i < users.length; i++) {
+						let user = new UserModel(users[i].user);
+
+						if (CurrentUser.getProp('id') === user.id) {
+							continue;
+						}
+
+						conatcts[user.id] = user;
+					}
+
+					Contacts.set(conatcts);
+
+					resolve(conatcts);
+				} else if (error.code === 404) {
+					resolve({});
+				} else {
+					reject(error);
+				}
+			});
+		});
+	}
+
+	listUsersByIds(ids) {
+		return new Promise((resolve, reject) => {
+			this.listUsers({
+				per_page: 100,
+				filter: {
+					field: 'id',
+					param: 'in',
+					value: ids || '',
+				},
+			})
+				.then(users => resolve(users))
+				.catch(error => reject(error));
+		});
+	}
+
+	listUsersByFullName(name) {
+		return new Promise((resolve, reject) => {
+			this.listUsers({ per_page: 100, full_name: name })
+				.then(users => resolve(Object.values(users)))
+				.catch(error => reject(error));
+		});
+	}
 
 }
 

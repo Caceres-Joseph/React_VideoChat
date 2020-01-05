@@ -10,7 +10,10 @@ class ChatService {
 	connect(user, dialogs) {
 		return new Promise((resolve, reject) => {
 			if (!user) reject()
-
+			console.log("##connect");
+			console.log(user.id);
+			console.log(user.password);
+			console.log("#/connect");
 			ConnectyCube.chat.connect({
 				userId: user.id,
 				password: user.password
@@ -21,6 +24,7 @@ class ChatService {
 					}
 					resolve(contacts)
 				} else {
+					console.log("##connect fail")
 					reject(error)
 				}
 			})

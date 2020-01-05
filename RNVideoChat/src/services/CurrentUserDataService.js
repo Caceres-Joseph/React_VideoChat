@@ -2,6 +2,8 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 class CurrentUserData {
   constructor(user = {}) {
+    console.log("--- Constructor de current user ---");
+    console.log(user);
     this._key = this.constructor.name;
     this.user = user;
   }
@@ -10,6 +12,12 @@ class CurrentUserData {
     try {
       const value = JSON.stringify(user);
       Object.assign(this.user, user);
+
+      console("##set");
+      console.log(this.user);
+      console.log(this._key);
+      console("#/set");
+
       await AsyncStorage.setItem(this._key, value);
     } catch (error) {
       return error;
