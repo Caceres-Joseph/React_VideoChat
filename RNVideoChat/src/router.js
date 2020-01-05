@@ -9,9 +9,11 @@ import VideoScreen from './components/VideoScreen'
 
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import DialogsScreen from './components/DialogsScreen'
+
+import DialogsScreen2 from './components/DialogsScreen2'
 import { chatDisconnected } from './actions/connection'
 
-import {TestScreen} from './components/Test/test'
+import { TestScreen } from './components/Test/test'
 
 
 const styles = StyleSheet.create({
@@ -31,15 +33,15 @@ class AppRouter extends React.Component {
 		Alert.alert(
 			'Log Out',
 			'Do you really want to leave the chat?',
-			[ 
-				{ text: 'Cancel', onPress: () => {} },
+			[
+				{ text: 'Cancel', onPress: () => { } },
 				{ text: 'OK', onPress: () => this._toAuthScene() }
 			]
 		)
 	}
 
 	_toAuthScene() {
-		
+
 		console.log("saliendo ....")
 	}
 
@@ -50,7 +52,9 @@ class AppRouter extends React.Component {
 
 	render() {
 		return (
+
 			<Router navigationBarStyle={styles.navBar} titleStyle={styles.navTitle}>
+
 				<Scene key="main">
 
 					<Scene key="auth"
@@ -73,21 +77,22 @@ class AppRouter extends React.Component {
 						statusBarStyle="light-content"
 						type="replace"
 						onLeft={() => this._shouldLogout()}
-						onRight={this._toCreateDialogScene}
 						leftTitle={
-							<Icon name="exit-to-app" size={26} color="white"/>
+							<Icon name="exit-to-app" size={26} color="white" />
 						}
 						rightTitle={
-							<Icon name="add-circle-outline" size={26} color="white"/>
+							<Icon name="add-circle-outline" size={26} color="white" />
 						}
 					/>
 
+ 
 
-
+					<Scene key="dialogs2"
+						component={DialogsScreen2}
+						hideNavBar
+					/>
 					<Scene key="test"
 						component={TestScreen}
-						title="Video Chat"
-						tintColor="white"
 						hideNavBar
 					/>
 

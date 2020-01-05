@@ -23,6 +23,7 @@ class UserStatic {
             .then(items => {
                 let dialogs = [];
 
+                Chat.connect(this.user, items);
 
                 for (let i = 0; i < items.length; i++) {
                     if (items[i].type === 1) continue
@@ -40,9 +41,11 @@ class UserStatic {
 
                     dialogs.push(dialog);
 
+                    /*
                     console.log("Dialog ...")
                     console.log(dialog.name)
                     console.log("/Dialog ...")
+                    */
                 }
 
                 this.dialogs = dialogs;

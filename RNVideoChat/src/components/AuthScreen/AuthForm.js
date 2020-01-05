@@ -105,10 +105,15 @@ class AuthForm extends React.Component {
         //User.user2 = user;
         UserStatic.user = user;
         this.props.userLogin(user);
-        Actions.test();
+        //Actions.test();
+        Actions.dialogs2();
       })
       .catch(e => alert(`Error.\n\n${JSON.stringify(e)}`))
 
+    var usertemp = UserService.user;
+
+
+    console.log("iniciando ..")
 
 
   }
@@ -225,7 +230,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     height: 50,
     borderRadius: 25,
-    backgroundColor: '#00e3cf',
+    backgroundColor: '#045FB4',
     marginHorizontal: 20,
     marginVertical: 10,
     alignItems: 'center',
@@ -249,7 +254,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     height: 50,
     borderRadius: 25,
-    backgroundColor: '#00e3cf',
+    backgroundColor: '#045FB4',
     marginHorizontal: 20,
     marginVertical: 10,
     alignItems: 'center',

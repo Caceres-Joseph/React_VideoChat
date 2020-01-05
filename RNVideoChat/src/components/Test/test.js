@@ -5,6 +5,8 @@ import {
     View,
     TouchableOpacity,
     Platform,
+    ToolbarAndroid,
+    StatusBar
 } from 'react-native'
 import Chat from '../../services/ChatService';
 import { Acttions } from 'react-native-router-flux';
@@ -14,6 +16,7 @@ import User from '../../services/UserService'
 import UserStatic from '../../services/UserStatic'
 import Dialog from '../../models/Dialog'
 import CurrentUser from '../../services/CurrentUserDataService'
+import Icon from 'react-native-vector-icons/MaterialIcons'
 
 export class TestScreen extends React.Component {
 
@@ -21,8 +24,15 @@ export class TestScreen extends React.Component {
 
     action2() {
 
-        
-        UserStatic.updateDialogs()
+        try {
+            UserStatic.updateDialogs()
+        }
+        catch (error) {
+            console.error(error);
+            // expected output: ReferenceError: nonExistentFunction is not defined
+            // Note - error messages will vary depending on browser
+        }
+
     }
 
 
@@ -95,12 +105,24 @@ export class TestScreen extends React.Component {
         console.log("----- fin -----");
     }
 
+    onActionSelected() {
+        console.log("Seleccionado ...");
+    }
+
     render() {
 
         return (
-            <View style={styles.container}>
+            <View >
+
+                <StatusBar backgroundColor="#0a254b" barStyle="light-content" />
+                <View style={styles.toolbar} title="MyApp" titleColor="white"
+                >
+                    <Text style={styles.noChatsText}>No hay chats aún</Text>
+
+                </View>
+
+
                 <Text
-                    style={styles.wlecome}
                 >
                     Vista 2
                 </Text>
@@ -119,6 +141,12 @@ export class TestScreen extends React.Component {
 
 
 const styles = StyleSheet.create({
+    toolbar: {
+        backgroundColor: '#084B8A',
+        height: 56,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
     container: {
         flex: 1,
         justifyContent: 'center',
@@ -152,4 +180,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
     },
+	noChatsText: {
+        fontSize: 20,
+        color:"white", 
+        alignContent:"center"
+	}
 })
