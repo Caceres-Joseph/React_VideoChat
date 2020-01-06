@@ -106,7 +106,12 @@ class AuthForm extends React.Component {
         UserStatic.user = user;
         this.props.userLogin(user);
         //Actions.test();
+
+        this.setState({ password: "" });
         Actions.dialogs2();
+
+
+
       })
       .catch(e => alert(`Error.\n\n${JSON.stringify(e)}`))
 
@@ -116,6 +121,12 @@ class AuthForm extends React.Component {
     console.log("iniciando ..")
 
 
+  }
+
+  componentWillUnmount(){
+
+    console.log("Desmontando componente");
+    this.setState({ password: "" });
   }
 
   _signIn2(userCredentials) {
