@@ -2,6 +2,7 @@ import ConnectyCube from 'connectycube-reactnative'
 import UserService from './UserService'
 import Dialog from '../models/Dialog'
 import Chat from './ChatService';
+import CurrentUser from './CurrentUserDataService'
 
 class UserStatic {
 
@@ -28,13 +29,9 @@ class UserStatic {
                 for (let i = 0; i < items.length; i++) {
                     if (items[i].type === 1) continue
 
-                    let dialog = new Dialog(items[i])
-
+                    let dialog = new Dialog(items[i]) 
                     if (dialog.type === 3) {
-                        /*dialog.destination = ConnectyCube.chat.helpers.getRecipientId(
-                            dialog.occupants_ids,
-                            CurrentUser.getProp('id'),
-                        )*/
+                        
                     } else {
                         dialog.destination = dialog.room_jid
                     }

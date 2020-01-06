@@ -14,7 +14,7 @@ import DialogsScreen2 from './components/DialogsScreen2'
 import { chatDisconnected } from './actions/connection'
 
 import { TestScreen } from './components/Test/test'
-
+import {ChatScreen} from './components/ChatScreen'
 
 const styles = StyleSheet.create({
 	navBar: {
@@ -85,7 +85,10 @@ class AppRouter extends React.Component {
 						}
 					/>
 
- 
+					<Scene key="chat"
+						component={ChatScreen}
+						hideNavBar
+					/>
 
 					<Scene key="dialogs2"
 						component={DialogsScreen2}

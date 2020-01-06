@@ -60,11 +60,13 @@ export default class DialogScreen2 extends React.Component {
 
 		console.log("------- Renderizando vistas -------  ");
 
+		/*
 		if (UserStatic.dialogs.length != null) {
 			console.log("Obteniendo la longitud del elemento ....");
 			console.log(UserStatic.dialogs.length);
 
 		}
+		*/
 
 		if (!this.state.timePassed) {
 
