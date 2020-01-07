@@ -153,7 +153,7 @@ class AppRoot extends React.Component {
       Actions.pop();
 
     } catch (e) {
-      console.error(e);
+      console.log(e);
     }
   }
 

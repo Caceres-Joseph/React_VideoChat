@@ -17,8 +17,16 @@ import {
 import CallingService from '../../services/CallingService';
 import UserStatic from '../../services/UserStatic'
 
+import { Actions } from 'react-native-router-flux';
 
 export class ToolBar extends React.Component {
+
+
+  constructor(props) {
+    super(props);
+    this.session = null;
+  }
+
   initiateCall() {
 
     console.log("Aquí estoy iniciando la llamada y estos son los que estan en la sesión")
@@ -38,6 +46,7 @@ export class ToolBar extends React.Component {
     CallingService.createVideoSession(dialog.occupants_ids).then(session => {
       console.log("Creando una nueva sesión")
       UserStatic.session = session;
+      this.session = session;
       this.accesLocalMediaStream(session);
     });
   }
@@ -65,20 +74,33 @@ export class ToolBar extends React.Component {
         CallingService.initiateCall(session);
       })
       .catch(err => {
-        console.error('getUserMedia err' + err);
+        console.log('getUserMedia err' + err);
       });
   }
 
 
 
   stopCall() {
-    //this.props.userIsCalling(false);
-    //this.props.callInProgress(false);
 
+    if (this.session == null)
+      return;
+
+
+
+    console.log("Finalizando la llamada ...");
+    console.log(this.session.ID)
+    this.props.userIsCalling(false);
+    this.props.callInProgress(false);
+    var extension = {};
+    this.session.stop(extension);
     CallingService.finishCall(UserStatic.session);
 
-    //this.props.clearVideoSession();
-    //this.props.clearVideoStreams();
+
+    this.props.clearVideoSession();
+    this.props.clearVideoStreams();
+
+    console.log("Regresnado");
+    Actions.pop();
   }
 
   switchCamera() {

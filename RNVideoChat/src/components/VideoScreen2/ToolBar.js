@@ -52,7 +52,7 @@ export class ToolBar extends React.Component {
                     CallingService.initiateCall(this.props.videoSession);
                 })
                 .catch(err => {
-                    console.error('getUserMedia err' + err);
+                    console.log('getUserMedia err' + err);
                 });
         });
     }
@@ -70,19 +70,21 @@ export class ToolBar extends React.Component {
                 //CallingService.initiateCall(this.props.videoSession);
             })
             .catch(err => {
-                console.error('getUserMedia err' + err);
+                console.log('getUserMedia err' + err);
             });
 
     }
 
     stopCall() {
-        this.props.userIsCalling(false);
-        this.props.callInProgress(false);
+        console.log("Cancelando la llamada ....");
+        //this.props.userIsCalling(false);
+        //this.props.callInProgress(false);
 
-        CallingService.finishCall(this.props.videoSession);
+        //CallingService.finishCall(UserStatic.session);
 
-        this.props.clearVideoSession();
-        this.props.clearVideoStreams();
+
+        //this.props.clearVideoSession();
+        //this.props.clearVideoStreams();
     }
 
     switchCamera() {

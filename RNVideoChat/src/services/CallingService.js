@@ -61,7 +61,7 @@ class CallingService {
 
   finishCall(session) {
     var extension = {};
-    session.stop(extension);
+    //session.stop(extension);
 
     ConnectyCube.videochat.clearSession(session.ID);
   }
