@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import ConnectyCube from 'connectycube-reactnative';
 import {
-    AppState,
     StyleSheet,
     KeyboardAvoidingView,
-    ActivityIndicator,
     FlatList,
     StatusBar,
     Platform,
@@ -12,17 +10,10 @@ import {
     Text,
     TouchableOpacity,
 } from 'react-native';
-import { connect } from 'react-redux';
 import { Header } from 'react-navigation-stack';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { AutoGrowingTextInput } from 'react-native-autogrow-textinput';
-
-//import {fetchMessages, pushMessage} from '../../actions/messages';
-//import {sortDialogs} from '../../actions/dialogs';
-//import {setSelected, removeSelected} from '../../actions/selected';
 import Chat from '../../services/ChatService';
-//import MessageModel from '../../models/Message';
-import Message from '../../models/Message'
 import UserStatic from '../../services/UserStatic'
 import Message2 from './Message2';
 import { Actions } from 'react-native-router-flux';
@@ -31,9 +22,6 @@ import { Actions } from 'react-native-router-flux';
 export class ChatScreen extends Component {
     constructor(props) {
         super(props);
-
-        //this.setState({ inProgress: true });
-
         this.state = {
             inProgress: true,
             messageValue: '',
@@ -48,28 +36,19 @@ export class ChatScreen extends Component {
 
 
     listenerOnMessage() {
-
-        console.log("Agregando el lsitener");
+        //Agregando el listener
         ConnectyCube.chat.onMessageListener = (userId, message) => {
-            console.log("Listener ...... ");
-            if (this.state.flagComponent) {
-                console.log("llamando al history ....");
+            if (this.state.flagComponent)
                 this.getAllHistory();
-            } else {
-                console.log("no está montado ...");
-            }
-
-
         };
     }
+
     componentDidMount() {
 
-        console.log("Montando el componente");
+        //Montando el componente
         this.setState({ flagComponent: true });
         this.listenerOnMessage();
-        this.getAllHistory();
-        //setSelected(dialog);
-
+        this.getAllHistory(); 
     }
 
     getAllHistory() {
@@ -93,18 +72,15 @@ export class ChatScreen extends Component {
     }
 
     componentWillUnmount() {
-        console.log("Desmontando el componente");
         this.setState({ flagComponent: false });
     }
 
     onTypeMessage = messageValue => this.setState({ messageValue });
 
     sendMessage = () => {
-        //const { user, dialog, pushMessage, sortDialogs } = this.props;
         const text = this.state.messageValue.trim();
         const date = Math.floor(Date.now() / 1000);
         const { dialog } = this.props;
-        const { history } = this.state;
 
 
         if (!text) return;
@@ -128,11 +104,7 @@ export class ChatScreen extends Component {
             markable: 1,
         };
 
-
-        console.log("Enviando el mensaje ..")
-        console.log(msg);
-        console.log(dialog.destination);
-        msg.id = ConnectyCube.chat.send(dialog.destination, msg);
+        ConnectyCube.chat.send(dialog.destination, msg);
 
         this.componentDidMount();
         this.setState({ messageValue: '' })
@@ -153,9 +125,8 @@ export class ChatScreen extends Component {
 
 
     videoChat = () => {
+        //iniciando el video chat
         const { dialog } = this.props;
-        console.log("inicinado una video llamada");
-        //UserStatic.occupants_ids = dialog.occupants_ids;
         Actions.videochat({
             dialog: dialog,
             title: dialog.name,

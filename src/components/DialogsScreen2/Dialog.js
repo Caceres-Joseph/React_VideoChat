@@ -10,11 +10,7 @@ import DialogUnreadCounter from './DialogUnreadCounter';
 export default class Dialog extends Component {
     toChat(dialog) {
         if (Actions.currentScene !== 'chat') {
-            
-            
-            
-            console.log("Abriendo el chat....");
-            console.log(dialog.name);
+            //Abriendo el chat
             Actions.chat({
                 dialog: dialog,
                 title: dialog.name

@@ -18,11 +18,9 @@ export default class DialogScreen2 extends React.Component {
 	}
 
 	componentDidMount() {
-
-		console.log("----     Esto es lo primero que se ejecuta");
-		UserStatic.updateDialogs();
-		console.log("Renderizando dialogs");
-
+ 
+		UserStatic.updateDialogs(); 
+		//Renderizando dialogos
 
 		setTimeout(() => {
 			this.setDialogs();
@@ -51,32 +49,7 @@ export default class DialogScreen2 extends React.Component {
 
 
 	render() {
-
-		//Cargando la lista de mensajes
-
-		//console.log(UserStatic.dialogs);
-
-
-		const dialogs = [];
-		//const dialogs = UserStatic.dialogs;
-
-		/*
-		setTimeout(() => {
-			//const dialogs = UserStatic.dialogs;
-			console.log("Despues de unos 2 segundos")
-		}, 5000);
-*/
-
-		console.log("------- Renderizando vistas -------  ");
-
-		/*
-		if (UserStatic.dialogs.length != null) {
-			console.log("Obteniendo la longitud del elemento ....");
-			console.log(UserStatic.dialogs.length);
-
-		}
-		*/
-
+ 
 		if (!this.state.timePassed) {
 
 			return (

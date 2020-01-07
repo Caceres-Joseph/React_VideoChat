@@ -6,12 +6,8 @@ import {
   userIsLogging,
   videoCallOpponentsIds,
 } from '../../actions/user';
-import UserService from '../../services/UserService';
-import ChatService from '../../services/ChatService';
-import { users } from '../../config';
 import { Actions } from 'react-native-router-flux';
 import UserStatic from '../../services/UserStatic'
-
 import User from '../../services/UserService'
 
 class AuthForm extends React.Component {
@@ -22,17 +18,6 @@ class AuthForm extends React.Component {
     password: '',
   }
 
-
-  loginUser1() {
-    this._signIn(users[0]);
-    this.props.videoCallOpponentsIds([users[1].id]);
-  }
-
-  loginUser2() {
-    this._signIn(users[1]);
-    this.props.videoCallOpponentsIds([users[0].id]);
-  }
-
   login() {
 
     const { name, email, password } = this.state
@@ -40,57 +25,10 @@ class AuthForm extends React.Component {
       login: email,
       password: password
     }
-
-    this._signIn3();
-
-
+    this._signIn();
   }
 
-  login2() {
-    const { name, email, password } = this.state
-    var datosUsuario = {
-      login: email,
-      password: password
-    }
-
-    if (!name.trim() && !email.trim()) {
-      alert('Warning.\n\nFill the fields to login.')
-      return
-    }
-
-    User.signin(datosUsuario);
-
-
-
-    //User.signin2(this.state)
-    //	.then(this.props.userLogin)
-    //  .catch(e => alert(`Error.\n\n${JSON.stringify(e)}`))
-
-
-    console.log("##login");
-    console.log(this.props.user.user);
-    console.log("#/login");
-    /*
-    var nuevo_usuario={
-      id:this.props.user.user.id,
-      login: this.props.user.user.login,
-      password: password
-
-    }
-    */
-
-    /*
-    Metodo para realizar una llamada 
-    
-    this._signIn(nuevo_usuario);
-    this.props.videoCallOpponentsIds([nuevo_usuario.id]);
-    */
-
-    //Actions.test(); 
-  }
-
-
-  _signIn3() {
+  _signIn() {
     const { name, email, password } = this.state
 
     if (!name.trim() && !email.trim()) {
@@ -101,104 +39,20 @@ class AuthForm extends React.Component {
 
     User.signin2(this.state)
       .then(user => {
-        //this.props.userLogin;
-        //User.user2 = user;
         UserStatic.user = user;
-        //Actions.test();
-
-        /*
-        {
-          "id": 72780,
-          "login": "videouser1",
-          "password": "videouser1"
-        },
-
-        */
-        var credential={
-          id:user.id,
-          login:user.login,
-          password:password
+        var credential = {
+          id: user.id,
+          login: user.login,
+          password: password
         }
-
-        //this._signIn(credential)
-
-
         Actions.dialogs2();
-        //console.log(user);
-
-
-
       })
       .catch(e => alert(`Error.\n\n${JSON.stringify(e)}`))
 
-    var usertemp = UserService.user;
-
-
-    console.log("iniciando ..")
-
-
-  }
-
-  componentWillUnmount() {
-
-    console.log("Desmontando componente");
-    this.setState({ password: "" });
-  }
-
-  _signIn2(userCredentials) {
-
-    UserService.signin(userCredentials)
-      .then(user => {
-        console.log("##singIn2")
-        console.log(user)
-        console.log("#/singIn2")
-
-        UserService.set_user(user);
-        Actions.test();
-      })
-      .catch(e => {
-        alert(`Error.\n\n${JSON.stringify(e)}`)
-      });
-  }
-
-  _signIn(userCredentials) {
-    this.props.userIsLogging(true);
-
-    UserService.signin(userCredentials)
-      .then(user => {
-        ChatService.connect(userCredentials)
-          .then(contacts => {
-            this.props.userLogin(user);
-            this.props.userIsLogging(false);
-            //Actions.videochat();
-
-            Actions.dialogs2();
-            console.log("Estoy logueado para llamdas....");
-          })
-          .catch(e => {
-            this.props.userIsLogging(false);
-            alert(`Error.\n\n${JSON.stringify(e)}`);
-          });
-      })
-      .catch(e => {
-        this.props.userIsLogging(false);
-        alert(`Error.\n\n${JSON.stringify(e)}`);
-      });
   }
 
 
-  /**
-        <TouchableOpacity onPress={() => this.loginUser1()}>
-          <View style={styles.buttonContainer}>
-            <Text style={styles.buttonLabel}>Log in as Alice</Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => this.loginUser2()}>
-          <View style={styles.buttonContainer}>
-            <Text style={styles.buttonLabel}>Log in as Bob</Text>
-          </View>
-        </TouchableOpacity>
-   */
+
   render() {
     return (
       <View style={styles.container}>

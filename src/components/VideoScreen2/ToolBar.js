@@ -33,28 +33,6 @@ export class ToolBar extends React.Component {
                 this.accesLocalMediaStream(session);
             });
         }
-
-
-
-
-        return;
-
-
-        CallingService.createVideoSession(this.props.opponentsIds).then(session => {
-            this.props.videoSessionObtained(session);
-
-            CallingService.getVideoDevices().then(this.props.setMediaDevices);
-
-            CallingService.getUserMedia(session)
-                .then(stream => {
-                    this.props.localVideoStreamObtained(stream);
-                    this.props.userIsCalling(true);
-                    CallingService.initiateCall(this.props.videoSession);
-                })
-                .catch(err => {
-                    console.log('getUserMedia err' + err);
-                });
-        });
     }
 
     accesLocalMediaStream(session) {
