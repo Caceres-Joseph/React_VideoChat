@@ -3,6 +3,9 @@ import { StyleSheet, View, TouchableOpacity, Text } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import ProfileIcon from '../Helpers/ProfileIcon';
 import DialogTitles from './DialogTitles';
+import DialogLastDate from './DialogLastDate';
+import DialogUnreadCounter from './DialogUnreadCounter';
+
 
 export default class Dialog extends Component {
     toChat(dialog) {
@@ -32,7 +35,15 @@ export default class Dialog extends Component {
 					<View style={styles.border} >
 						<DialogTitles
 							name={dialog.name}
-							message="..."/>
+							message={dialog.last_message}/>
+                            <View style={styles.infoContainer}>
+                                <DialogLastDate
+                                    lastDate={dialog.last_message_date_sent}
+                                    lastMessage={dialog.last_message}
+                                    updatedDate={dialog.updated_date}/> 
+							<DialogUnreadCounter
+								unreadMessagesCount={dialog.unread_messages_count}/>
+                            </View>
 					</View>
 
                 </View>

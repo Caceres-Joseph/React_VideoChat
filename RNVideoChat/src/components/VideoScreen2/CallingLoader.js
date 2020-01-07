@@ -8,7 +8,7 @@ export class CallingLoader extends React.Component {
 			<View style={styles.container}>
 				{ this.props.userIsCalling &&
 					<View style={styles.info}>
-						<Text style={styles.text}>Llamando ...</Text>
+						<Text style={styles.text}>Calling...</Text>
 						<ActivityIndicator size="large" color="white" />
 					</View>
 				}

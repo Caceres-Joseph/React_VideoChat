@@ -91,7 +91,7 @@ class AuthForm extends React.Component {
 
 
   _signIn3() {
-    const { name, email } = this.state
+    const { name, email, password } = this.state
 
     if (!name.trim() && !email.trim()) {
       alert('Warning.\n\nFill the fields to login.')
@@ -104,11 +104,27 @@ class AuthForm extends React.Component {
         //this.props.userLogin;
         //User.user2 = user;
         UserStatic.user = user;
-        this.props.userLogin(user);
         //Actions.test();
 
-        this.setState({ password: "" });
+        /*
+        {
+          "id": 72780,
+          "login": "videouser1",
+          "password": "videouser1"
+        },
+
+        */
+        var credential={
+          id:user.id,
+          login:user.login,
+          password:password
+        }
+
+        //this._signIn(credential)
+
+
         Actions.dialogs2();
+        //console.log(user);
 
 
 
@@ -123,7 +139,7 @@ class AuthForm extends React.Component {
 
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
 
     console.log("Desmontando componente");
     this.setState({ password: "" });
@@ -154,7 +170,10 @@ class AuthForm extends React.Component {
           .then(contacts => {
             this.props.userLogin(user);
             this.props.userIsLogging(false);
-            Actions.videochat();
+            //Actions.videochat();
+
+            Actions.dialogs2();
+            console.log("Estoy logueado para llamdas....");
           })
           .catch(e => {
             this.props.userIsLogging(false);

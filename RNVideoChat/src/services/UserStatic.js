@@ -12,6 +12,8 @@ class UserStatic {
         this.jhosef = "";
         this.chatConectado = true;
         this.dialogs = [];
+        this.occupants_ids = [];
+        this.session = null;
     }
 
 
@@ -29,9 +31,9 @@ class UserStatic {
                 for (let i = 0; i < items.length; i++) {
                     if (items[i].type === 1) continue
 
-                    let dialog = new Dialog(items[i]) 
+                    let dialog = new Dialog(items[i])
                     if (dialog.type === 3) {
-                        
+
                     } else {
                         dialog.destination = dialog.room_jid
                     }

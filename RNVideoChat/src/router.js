@@ -4,7 +4,6 @@ import { StyleSheet, Alert } from 'react-native'
 import { Actions, Router, Scene } from 'react-native-router-flux'
 import { userLogout } from './actions/user'
 import AuthScreen from './components/AuthScreen'
-import VideoScreen from './components/VideoScreen'
 
 
 import Icon from 'react-native-vector-icons/MaterialIcons'
@@ -15,6 +14,9 @@ import { chatDisconnected } from './actions/connection'
 
 import { TestScreen } from './components/Test/test'
 import {ChatScreen} from './components/ChatScreen'
+
+//import {VideoScreen2} from './components/VideoScreen2'
+import VideoScreen from './components/VideoScreen'
 
 const styles = StyleSheet.create({
 	navBar: {

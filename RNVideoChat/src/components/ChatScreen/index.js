@@ -27,6 +27,7 @@ import UserStatic from '../../services/UserStatic'
 import Message2 from './Message2';
 import { Actions } from 'react-native-router-flux';
 
+
 export class ChatScreen extends Component {
     constructor(props) {
         super(props);
@@ -40,8 +41,9 @@ export class ChatScreen extends Component {
             history: [],
             flagComponent: false
         };
+        const { dialog } = this.props;
 
-        var mypromise;
+        this.dialog = dialog;
     }
 
 
@@ -149,6 +151,19 @@ export class ChatScreen extends Component {
         );
     }
 
+
+    videoChat = () => {
+        const { dialog } = this.props;
+        console.log("inicinado una video llamada");
+        //UserStatic.occupants_ids = dialog.occupants_ids;
+        Actions.videochat({
+            dialog: dialog,
+            title: dialog.name,
+            llamadaSaliente: true
+        });
+
+    }
+
     render() {
         const { messageValue, inProgress, history } = this.state;
         const { dialog } = this.props;
@@ -183,7 +198,7 @@ export class ChatScreen extends Component {
                         </TouchableOpacity>
                         <Text style={styles.headerChatsText}>{dialog.name}</Text>
                         <View style={styles.camera}>
-                            <TouchableOpacity style={styles.button} onPress={this.sendMessage}>
+                            <TouchableOpacity style={styles.button} onPress={this.videoChat}>
                                 <Icon name="videocam" size={34} color="white" />
                             </TouchableOpacity>
                         </View>

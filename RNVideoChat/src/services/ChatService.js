@@ -35,7 +35,7 @@ class ChatService {
 				if (!error && result) {
 					const items = result.items
 
-					
+
 
 
 
@@ -57,10 +57,10 @@ class ChatService {
 	// Chat - Messages
 	getHistory(dialogId) {
 		return new Promise((resolve, reject) => {
- 
+
 			ConnectyCube.chat.message.list({
 				chat_dialog_id: dialogId,
-				sort_desc: 'date_sent', 
+				sort_desc: 'date_sent',
 				limit: 20
 			}, (error, result) => {
 				if (!error) {
@@ -105,6 +105,27 @@ class ChatService {
 				resolve()
 			})
 		})
+	}
+
+
+
+	/*
+	Servicios para video llamadas
+	*/
+
+	createVideoSession(calleesIds) {
+		return new Promise((resolve, reject) => {
+			const sessionType = ConnectyCube.videochat.CallType.VIDEO; // AUDIO is also possible
+			const additionalOptions = {};
+			const session = ConnectyCube.videochat.createNewSession(
+				calleesIds,
+				sessionType,
+				additionalOptions,
+			);
+
+			console.log("###sSe creó la sesión")
+			resolve(session);
+		});
 	}
 
 }

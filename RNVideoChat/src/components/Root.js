@@ -1,9 +1,9 @@
 import React from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import ConnectyCube from 'connectycube-reactnative';
 import config from '../config';
 import AppRouter from '../router';
-import {Alert} from 'react-native';
+import { Alert } from 'react-native';
 import CallingService from '../services/CallingService';
 import {
   videoSessionObtained,
@@ -17,6 +17,8 @@ import {
   setActiveVideoDevice,
 } from '../actions/videosession';
 import InCallManager from 'react-native-incall-manager';
+import { Actions } from 'react-native-router-flux';
+
 
 class AppRoot extends React.Component {
   componentDidMount() {
@@ -62,11 +64,11 @@ class AppRoot extends React.Component {
     videoSessionObtained(session);
 
     Alert.alert(
-      'Incoming call',
-      'from user',
+      'Recibiendo una llamada',
+      '...',
       [
         {
-          text: 'Accept',
+          text: 'Aceptar',
           onPress: () => {
             console.log('Accepted call request');
 
@@ -74,13 +76,28 @@ class AppRoot extends React.Component {
 
             CallingService.getUserMedia(session).then(stream => {
               localVideoStreamObtained(stream);
+
+              console.log('........ Acepté la llamada');
+              //Abriendo la pantalla de llamadas 
+
+              //UserStatic.occupants_ids = dialog.occupants_ids;
+              var dialog = {
+                name: "",
+                occupants_ids: []
+              }
+
+              Actions.videochat({
+                dialog: dialog,
+                llamadaSaliente: false
+              });
+
               CallingService.acceptCall(session);
               callInProgress(true);
             });
           },
         },
         {
-          text: 'Reject',
+          text: 'Rechazar',
           onPress: () => {
             console.log('Rejected call request');
             CallingService.rejectCall(session);
@@ -88,7 +105,7 @@ class AppRoot extends React.Component {
           style: 'cancel',
         },
       ],
-      {cancelable: false},
+      { cancelable: false },
     );
   }
 
@@ -118,13 +135,26 @@ class AppRoot extends React.Component {
   }
 
   onStopCallListener(session, userId, extension) {
-    this.props.userIsCalling(false);
-    this.props.callInProgress(false);
 
-    this.props.clearVideoSession();
-    this.props.clearVideoStreams();
+    try {
 
-    CallingService.processOnStopCallListener(session, extension);
+
+      console.log("------    Se canceló la llamada");
+      this.props.userIsCalling(false);
+      console.log("---- 1");
+      this.props.callInProgress(false);
+      console.log("---- 2");
+      this.props.clearVideoSession();
+      console.log("---- 3");
+      this.props.clearVideoStreams();
+      console.log("---- 4");
+      CallingService.processOnStopCallListener(session, extension);
+      console.log("---- 5");
+      Actions.pop();
+
+    } catch (e) {
+      console.error(e);
+    }
   }
 
   onSessionConnectionStateChangedListener(session, userID, connectionState) {

@@ -78,7 +78,7 @@ class CallingService {
     console.log('CallingService processOnUserNotAnswer', userId);
 
     Alert.alert(
-      'An opponent did not answer',
+      'El destinatario no responde ...',
       '',
       [{text: 'Ok', onPress: () => {}}],
       {cancelable: true},
@@ -91,9 +91,9 @@ class CallingService {
     ConnectyCube.videochat.clearSession(session.ID);
 
     Alert.alert(
-      'An opponent rejected the call request',
+      'Recibiendo llamada ...',
       '',
-      [{text: 'Ok', onPress: () => {}}],
+      [{text: 'Aceptar', onPress: () => {}}],
       {cancelable: true},
     );
   }
@@ -101,7 +101,7 @@ class CallingService {
   processOnStopCallListener(session, extension) {
     ConnectyCube.videochat.clearSession(session.ID);
 
-    Alert.alert('The call is finished', '', [{text: 'Ok', onPress: () => {}}], {
+    Alert.alert('La llamada ha finalizado', '', [{text: 'Aceptar', onPress: () => {}}], {
       cancelable: true,
     });
   }

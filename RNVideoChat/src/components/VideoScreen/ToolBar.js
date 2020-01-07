@@ -1,8 +1,9 @@
 import React from 'react';
-import {StyleSheet, View, TouchableOpacity, Platform} from 'react-native';
+import ConnectyCube from 'connectycube-reactnative';
+import { StyleSheet, View, TouchableOpacity, Platform } from 'react-native';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import {
   userIsCalling,
   callInProgress,
@@ -14,34 +15,70 @@ import {
   setMediaDevices,
 } from '../../actions/videosession';
 import CallingService from '../../services/CallingService';
+import UserStatic from '../../services/UserStatic'
+
 
 export class ToolBar extends React.Component {
   initiateCall() {
-    CallingService.createVideoSession(this.props.opponentsIds).then(session => {
-      this.props.videoSessionObtained(session);
 
-      CallingService.getVideoDevices().then(this.props.setMediaDevices);
+    console.log("Aquí estoy iniciando la llamada y estos son los que estan en la sesión")
 
-      CallingService.getUserMedia(session)
-        .then(stream => {
-          this.props.localVideoStreamObtained(stream);
-          this.props.userIsCalling(true);
-          CallingService.initiateCall(this.props.videoSession);
-        })
-        .catch(err => {
-          console.error('getUserMedia err' + err);
-        });
+    const { dialog } = this.props;
+    console.log("inciando la llamada ....");
+    console.log(dialog);
+
+
+
+
+    if (UserStatic.session != null) {
+      console.log("Limpiando una sesión existente");
+      ConnectyCube.videochat.clearSession(UserStatic.session.ID);
+    }
+
+    CallingService.createVideoSession(dialog.occupants_ids).then(session => {
+      console.log("Creando una nueva sesión")
+      UserStatic.session = session;
+      this.accesLocalMediaStream(session);
     });
   }
 
+
+  componentDidMount() {
+    const { llamadaSaliente } = this.props;
+    console.log("Realizando la llamada ...");
+    console.log(llamadaSaliente)
+    if (llamadaSaliente) {
+
+      this.initiateCall();
+    }
+
+  }
+
+  accesLocalMediaStream(session) {
+    CallingService.getUserMedia(session)
+      .then(stream => {
+
+        console.log("Se ha creado el streaming");
+        this.props.localVideoStreamObtained(stream);
+        this.props.userIsCalling(true);
+        console.log("El streaming sigue ....");
+        CallingService.initiateCall(session);
+      })
+      .catch(err => {
+        console.error('getUserMedia err' + err);
+      });
+  }
+
+
+
   stopCall() {
-    this.props.userIsCalling(false);
-    this.props.callInProgress(false);
+    //this.props.userIsCalling(false);
+    //this.props.callInProgress(false);
 
-    CallingService.finishCall(this.props.videoSession);
+    CallingService.finishCall(UserStatic.session);
 
-    this.props.clearVideoSession();
-    this.props.clearVideoStreams();
+    //this.props.clearVideoSession();
+    //this.props.clearVideoStreams();
   }
 
   switchCamera() {
@@ -50,10 +87,10 @@ export class ToolBar extends React.Component {
 
   muteUnmuteAudio() {
     if (this.props.audioMuted) {
-      CallingService.unmuteAudio(this.props.videoSession);
+      CallingService.unmuteAudio(UserStatic.session);
       this.props.muteAudio(false);
     } else {
-      CallingService.muteAudio(this.props.videoSession);
+      CallingService.muteAudio(UserStatic.session);
       this.props.muteAudio(true);
     }
   }
@@ -71,12 +108,12 @@ export class ToolBar extends React.Component {
         <MaterialIcon name="call-end" size={38} color="white" />
       </TouchableOpacity>
     ) : (
-      <TouchableOpacity
-        style={[styles.buttonContainer, styles.buttonCall]}
-        onPress={() => this.initiateCall()}>
-        <MaterialIcon name="call" size={38} color="white" />
-      </TouchableOpacity>
-    );
+        <TouchableOpacity
+          style={[styles.buttonContainer, styles.buttonCall]}
+          onPress={() => this.initiateCall()}>
+          <MaterialIcon name="call" size={38} color="white" />
+        </TouchableOpacity>
+      );
 
     return (
       <View style={styles.container}>
@@ -92,12 +129,12 @@ export class ToolBar extends React.Component {
                 color="white"
               />
             ) : (
-              <MaterialCommunityIcon
-                name="microphone-minus"
-                size={38}
-                color="white"
-              />
-            )}
+                <MaterialCommunityIcon
+                  name="microphone-minus"
+                  size={38}
+                  color="white"
+                />
+              )}
           </TouchableOpacity>
         )}
         {isActiveCall && isTwoCamerasAvailable && (
@@ -144,11 +181,11 @@ const styles = StyleSheet.create({
   },
   buttonMute: {
     backgroundColor: 'mediumblue',
-    paddingTop: Platform.select({android: 0, ios: 5}),
+    paddingTop: Platform.select({ android: 0, ios: 5 }),
   },
   buttonSwitch: {
     backgroundColor: 'gold',
-    paddingTop: Platform.select({android: 0, ios: 5}),
+    paddingTop: Platform.select({ android: 0, ios: 5 }),
   },
 });
 
