@@ -37,6 +37,8 @@ target 'RNVideoChat' do
   pod 'react-native-webrtc', :path => '../node_modules/react-native-webrtc'
   pod 'ReactNativeIncallManager', :path => '../node_modules/react-native-incall-manager'
 
+  pod 'react-native-zebra-bluetooth-printer', :path => '../node_modules/react-native-zebra-bluetooth-printer'
+
   target 'RNVideoChatTests' do
     inherit! :search_paths
     # Pods for testing

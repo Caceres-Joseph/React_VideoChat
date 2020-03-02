@@ -9,6 +9,8 @@ import {
 import { Actions } from 'react-native-router-flux';
 import UserStatic from '../../services/UserStatic'
 import User from '../../services/UserService'
+import ZebraBTPrinter from 'react-native-zebra-bt-printer';
+import RNZebraBluetoothPrinter from 'react-native-zebra-bluetooth-printer'
 
 class AuthForm extends React.Component {
 
@@ -25,7 +27,109 @@ class AuthForm extends React.Component {
       login: email,
       password: password
     }
-    this._signIn();
+    //this._signIn();
+    Actions.web();
+  }
+
+
+  /*
+    zebraPrint() {
+      try {
+  
+        var userPrintCount = 1;
+        var userText1 = "->";
+        var userText2 = "Ado wicoy\n";
+        var userText3 = "-------------";
+  
+        //Store your printer serial or mac, ios needs serial, android needs mac
+        var printerSerial = 'AC:3F:A4:13:39:E0';
+  
+        //check if printer is set
+        if (printerSerial !== null && printerSerial !== '') {
+          ZebraBTPrinter.printLabel(printerSerial, userPrintCount, userText1, userText2, userText3).then((result) => {
+            console.log(result);
+  
+            if (result === false) {
+              console.log('Print failed, please check printer connection');
+            }
+          })
+            .catch((err) => console.log(err.message));
+        } else {
+          console.log('Print failed, no printer setup found');
+        }
+      } catch (error) {
+        // Error retrieving data
+        console.log('Async getItem failed');
+      }
+  
+  
+    }
+    */
+
+
+  zebraPrint2() {
+    //const zpl = "^XA^FX Top section with company logo, name and address.^CF0,60^FO50,50^GB100,100,100^FS^ FO75,75 ^ FR ^ GB100, 100, 100 ^ FS^ FO88, 88 ^ GB50, 50, 50 ^ FS ^XZ";
+    //const zpl = "Saludando desde la impresora\n"
+
+
+    console.log("--- printing ---")
+    //for android, device address is mac address
+    //for iOS, device address is a long string like 0C347F9F-2881-9CCB-43B0-205976944626
+    /*const zpl = '^XA\n'  + 
+    '^FO50,50 \n'  +
+    '^A0,32,25\n'  + 
+    '^FDZEBRA^FS\n'  + 
+    '^FO50,150\n'  +
+    '^A0,32,25\n'  + 
+    '^FDPROGRAMMING^FS\n'  + 
+    '^FO50,250\n'  +
+    '^A0,32,25^FDLANGUAGE^FS\n'  + 
+    '^XZ\n';
+    */
+   const zpl = "^XA^FX Top section with company logo, name and address.^CF0,60^FO50,50^GB100,100,100^FS^ FO75,75 ^ FR ^ GB100, 100, 100 ^ FS^ FO88, 88 ^ GB50, 50, 50 ^ FS ^XZ";
+    RNZebraBluetoothPrinter.print('AC:3F:A4:13:39:E0', zpl).then((res) => {
+      //do something with res
+      console.log(res);
+    }).catch(e => {
+      console.log(e)
+    })
+
+
+    return;
+    RNZebraBluetoothPrinter.pairedDevices().then((deviceArray) => {
+      console.log(deviceArray)
+    })
+
+
+    return;
+    RNZebraBluetoothPrinter.scanDevices().then((deviceArray) => {
+      //do something with res
+      console.log(deviceArray)
+      console.log("Coneect device")
+      RNZebraBluetoothPrinter.connectDevice('AC:3F:A4:13:39:E0').then((res) => {
+        //do something with res
+        console.log(res)
+        //for android, device address is mac address
+        //for iOS, device address is a long string like 0C347F9F-2881-9CCB-43B0-205976944626
+      })
+
+    })
+
+
+
+  }
+
+  zebraPrint3() {
+    RNZebraBluetoothPrinter.isEnabledBluetooth().then((res) => {
+      //do something with res 
+      if (res) {
+        RNZebraBluetoothPrinter.scanDevices().then((deviceArray) => {
+          console.log(deviceArray)
+        })
+      }
+
+    })
+
   }
 
   _signIn() {
@@ -45,7 +149,6 @@ class AuthForm extends React.Component {
           login: user.login,
           password: password
         }
-        Actions.dialogs2();
       })
       .catch(e => alert(`Error.\n\n${JSON.stringify(e)}`))
 
@@ -77,7 +180,13 @@ class AuthForm extends React.Component {
         />
         <TouchableOpacity onPress={() => this.login()}>
           <View style={styles.buttonContainer}>
-            <Text style={styles.buttonLabel}>Iniciar sesión</Text>
+            <Text style={styles.buttonLabel}>Login</Text>
+          </View>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={() => this.zebraPrint2()}>
+          <View style={styles.buttonContainer}>
+            <Text style={styles.buttonLabel}>Imprimir</Text>
           </View>
         </TouchableOpacity>
       </View>

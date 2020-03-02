@@ -10,10 +10,14 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 import DialogsScreen from './components/DialogsScreen'
 
 import DialogsScreen2 from './components/DialogsScreen2'
+
+
 import { chatDisconnected } from './actions/connection'
 
 import { TestScreen } from './components/Test/test'
 import {ChatScreen} from './components/ChatScreen'
+
+import Web from './components/Web'
 
 //import {VideoScreen2} from './components/VideoScreen2'
 import VideoScreen from './components/VideoScreen'
@@ -96,6 +100,13 @@ class AppRouter extends React.Component {
 						component={DialogsScreen2}
 						hideNavBar
 					/>
+
+
+					<Scene key="web"
+						component={Web}
+						hideNavBar
+					/>
+
 					<Scene key="test"
 						component={TestScreen}
 						hideNavBar
